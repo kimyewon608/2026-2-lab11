@@ -39,32 +39,31 @@ namespace kimyewon2649007{
         testId(); testScore(); calGrade();
     }
 
-    void input(){
-        std::cout << "Enter name: "; std::getline(std::cin >> std::ws, name);
-        std::cout << "Enter id: ";   std::cin >> id; testId();
-        std::cout << "Enter score: ";std::cin >> score; testScore();
+    void input(std::istream& is = std::cin){
+        std::cout << "Enter name: "; std::getline(is >> std::ws, name);
+        std::cout << "Enter id: ";   is >> id; testId();
+        std::cout << "Enter score: "; is >> score; testScore();
         calGrade();
     }
 
     friend std::istream& operator>>(std::istream& is, student& s){
-        std::cout << "Enter name: "; std::getline(is >> std::ws, s.name);
-        std::cout << "Enter id: ";	 is >> s.id; s.testId();
-        std::cout << "Enter score: ";is >> s.score; s.testScore();
-        s.calGrade();
+        s.input(is);
         return is;
     }
 
     void setName(const std::string& n){name = n;}
     void setId(int d){id = d; testId();}
     void setScore(int s){score = s; testScore();}
-    void print() const {
-        std::cout << name << "(" << id << "):" << score << "(" << grade << ")\n";
+    
+    void print(std::ostream& os = std::cout) const {
+        os << name << "(" << id << "):" ;
+        os.width(3); os.fill('0');
+        os << score << "(" << grade << ")\n";
     }
 
     friend std::ostream& operator<<(std::ostream& os, const student& s) {
-        os << s.name << "(" << s.id << "):" << s.score << "(" << s.grade << ")\n";
-    return os;
-
+        s.print(os);
+        return os;
     }
 
     const std::string& getName() const {return name;}
